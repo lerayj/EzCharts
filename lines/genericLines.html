@@ -1,0 +1,77 @@
+  <!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./styles/genericLines.css">
+
+    <script type="text/javascript" src="./js/libs/underscore.js"></script>
+
+    <script type="text/javascript" src="./js/libs/jquery-2.1.3.js"></script>
+    <script type="text/javascript" src="./js/libs/underscore.js"></script>
+    <script type="text/javascript" src="./js/libs/d3/d3.js"></script>
+    <script type="text/javascript" src="./js/libs/d3/d3.chart.js"></script>
+
+    <script type="text/javascript" src="./js/genericLines.js"></script>
+  </head>
+  <body>
+    <div class="chart"></div>
+
+    <script type="text/javascript">
+      var chart = d3.select('.chart')
+        .append('svg')
+        .attr('width', 500)
+        .attr('height', 300)
+        .chart('genericLines');
+
+
+      var data = 
+      [
+      {
+        id: 0,
+        points: 
+          [{
+            id: 0,
+            coord:[12, 46],
+            label: "label 1"
+            },{
+            id: 1,
+            coord:[24, 12],
+            label: "label 2"
+            },{
+            id: 2,
+            coord:[65, 75],
+            label: "label 3"
+            },{
+            id: 3,
+            coord:[87, 54],
+            label: "label 4"
+          }]
+      },{
+        id: 1,
+        points: 
+          [{
+            id: 0,
+            coord:[22, 16],
+            label: "label 1"
+            },{
+            id: 1,
+            coord:[34, 22],
+            label: "label 2"
+            },{
+            id: 2,
+            coord:[45, 25],
+            label: "label 3"
+            },{
+            id: 3,
+            coord:[57, 74],
+            label: "label 4"
+          }]
+      }
+
+      ]
+
+      chart.draw(data);
+
+    </script>
+  </body>
+  </html>
