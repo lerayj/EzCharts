@@ -13,10 +13,12 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.3');
   api.addFiles('ez-charts.js');
-});
+  api.use("templating", "client");
+  api.use("underscore", "client");
+  api.use("agnito:d3-chart", "client");
+  api.addFiles('ez-chartsTemplates.html', 'client');
+  api.addFiles('verticalBar.js', 'client');
+  api.addFiles('ez-charts-UiHelpers.js', 'client');
 
-Package.onTest(function(api) {
-  api.use('tinytest');
-  api.use('lerayj:ez-charts');
-  api.addFiles('ez-charts-tests.js');
+
 });
