@@ -21,7 +21,9 @@ Basically, you need only one line to make EzCharts to work:
 ```javascript
 {{> EzChartBar width=widthTest height=heightTest data=dataTest name="BarChartCool"}}
 ```
-*Tip*
+**_Tip_**
+
+
 Specify a name isn't necessary. It's just allow you to add a class directly on the root chart element.
 
 ##Full Example
