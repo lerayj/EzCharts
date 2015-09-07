@@ -17,10 +17,10 @@ Based on top of D3.chart, create your data-visualization in a second.
 
 
 ##QuickStart
-  Basically, you need only one line to make EzCharts to work:
-  ```javascript
-  {{> EzChartBar width=widthTest height=heightTest data=dataTest}}
-  ```
+Basically, you need only one line to make EzCharts to work:
+```javascript
+{{> EzChartBar width=widthTest height=heightTest data=dataTest}}
+```
 ##Full Example
 
 Let's take a concrete example, with one template and his associated helper:
@@ -28,19 +28,19 @@ Let's take a concrete example, with one template and his associated helper:
 
 
 ```javascript
-  Template.hello.helpers({
-    dataTest: function () {
-    var data = [
-      {id: 0, name: "label 1", value: 350},
-      {id: 1, name: "label 2", value: 20},
-      {id: 2, name: "label 3", value: 10},
-      {id: 3, name: "label 4", value: 5},
-    ];
-      return data;
-    },
-    widthTest: function(){return 500;},
-    heightTest: function(){return 200;}
-  });
+Template.hello.helpers({
+  dataTest: function () {
+  var data = [
+    {id: 0, name: "label 1", value: 50},
+    {id: 1, name: "label 2", value: 120},
+    {id: 2, name: "label 3", value: 310},
+    {id: 3, name: "Very long label 4 on two lines", value: 25}
+  ];
+    return data;
+  },
+  widthTest: function(){return 500;},
+  heightTest: function(){return 200;}
+});
 ```
 
 ####hello.html
@@ -83,35 +83,48 @@ Same concept than above, you can dra as much line as you want on your chart.
 
 
 ```javascript
-      var data = 
+  var data = 
+  [{
+    id: 0,
+    points: 
       [{
         id: 0,
-        points: 
-          [{
-            id: 0,
-            coord:[12, 46],
-            label: "label 1"
-            },{
-            id: 1,
-            coord:[24, 12],
-            label: "label 2"
-            },{
-            id: 2,
-            coord:[65, 75],
-            label: "label 3"
-            },{
-            id: 3,
-            coord:[87, 54],
-            label: "label 4"
-          }]
+        coord:[12, 46],
+        label: "label 1"
+        },{
+        id: 1,
+        coord:[24, 12],
+        label: "label 2"
+        },{
+        id: 2,
+        coord:[65, 75],
+        label: "label 3"
+        },{
+        id: 3,
+        coord:[87, 54],
+        label: "label 4"
       }]
+  }]
 ```
 
 ###Donut
 Work in progress
 
 ```javascript
-Work in progress
+var data = 
+[{
+  id: 0,
+  label: "Group 1",
+  val: 459
+},{
+  id: 1,
+  label: "Group 2",
+  val: 200
+},{
+  id: 3,
+  label: "Group 3",
+  val: 100
+}];
 ```
 ##Defaults Charts
 
