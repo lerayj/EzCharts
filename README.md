@@ -53,7 +53,7 @@ Let's take a concrete example, with one template and his associated helper:
 ```
 
 ####Render
-
+![alt tag](./images/scBarChart.png)
 That's it!
 
 
