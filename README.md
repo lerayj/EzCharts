@@ -19,8 +19,11 @@ Based on top of D3.chart, create your data-visualization in a second.
 ##QuickStart
 Basically, you need only one line to make EzCharts to work:
 ```javascript
-{{> EzChartBar width=widthTest height=heightTest data=dataTest}}
+{{> EzChartBar width=widthTest height=heightTest data=dataTest name="BarChartCool"}}
 ```
+*Tip*
+Specify a name isn't necessary. It's just allow you to add a class directly on the root chart element.
+
 ##Full Example
 
 Let's take a concrete example, with one template and his associated helper:
