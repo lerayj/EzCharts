@@ -23,7 +23,6 @@ Basically, you need only one line to make EzCharts to work:
 ```
 **_Tip_**
 
-
 Specify a name isn't necessary. It's just allow you to add a class directly on the root chart element.
 
 ##Full Example
@@ -136,7 +135,19 @@ var data =
 
 
 ##Colors and Styles
-Work in progress
+It's really simple to style your charts.
+
+Just override the CSS in your app.
+
+**_Tip_**
+
+Donut's slice could be selected independently by id; each slice has one.
+To style one slice:
+```css
+.myClassName .slice-0{
+	fill:#27ae60;
+}
+```
 
 
 ##Dependencies
