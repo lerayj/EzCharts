@@ -11,6 +11,8 @@ rect{
 }
 
 /*End Bars*/
+
+/*Lines*/
 .line {
 	stroke: steelblue;
 	stroke-width: 1.5px;
@@ -20,14 +22,28 @@ rect{
 .axis path,
 .axis line,
 .axis {
-  fill: none;
-  stroke: #6e6e6e;
-  shape-rendering: crispEdges;
+	fill: none;
+	stroke: #6e6e6e;
+	shape-rendering: crispEdges;
 }
-/*Lines*/
-
 /*End Lines*/
 
 /*Donut*/
+
+.arc path {
+	stroke: #fff;
+}
+
+.slice-0{
+	fill:#27ae60;
+}
+
+.slice-1{
+	fill:#2980b9;
+}
+
+.slice-2{
+	fill:#8e44ad;
+}
 
 /*End Donut*/

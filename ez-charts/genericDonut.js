@@ -6,9 +6,6 @@ d3.chart('genericDonut', {
 		radius = radius = Math.min(width, height) / 2,
 		chart = this;
 
-		var color = d3.scale.ordinal()
-   			.range(["#98abc5", "#8a89a6"]);
-
 		var arc = d3.svg.arc()
 		    .outerRadius(radius - 10)
 		    .innerRadius(radius - 70);
@@ -32,10 +29,9 @@ d3.chart('genericDonut', {
 			 //      .style("text-anchor", "middle")
 			 //      .text(function(d) { return d.data.label; });
 
-				return this.append('path').attr('class', 'slice').attr('fill', function(elem){
-					var randomColor = '#'+Math.floor(Math.random()*16777215).toString(16);
-						return randomColor;
-					}).attr('d', arc);
+				return this.append('path').attr('class', 'slice').attr('class', function(elem, idx){
+					return 'slice-' + idx;
+				}).attr('fill', 'black').attr('d', arc);
 			},
 			events: {
 				merge: function(){

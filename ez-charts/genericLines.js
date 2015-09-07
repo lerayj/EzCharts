@@ -70,9 +70,23 @@ d3.chart('genericLines', {
 			});
 			return res.coord[0];
 		});
+
+		var minY = d3.min(data, function(line){
+			var res = _.min(line.points, function(pts){
+				return pts.coord[1];
+			});
+			return res.coord[1];
+		});
+		var minX = d3.min(data, function(line){
+			var res = _.min(line.points, function(pts){
+				return pts.coord[0];
+			});
+			return res.coord[0];
+		});
+
 		console.log("maxX: ", maxX, " maxY: ", maxY);
-		this.x.domain([0, maxX]);
-		this.y.domain([0, maxY]);
+		this.x.domain([minX, maxX]);
+		this.y.domain([minY, maxY]);
 
 		this.svgXAxis.call(this.xAxis);
 		this.svgYAxis.call(this.yAxis);
