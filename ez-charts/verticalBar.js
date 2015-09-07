@@ -55,9 +55,8 @@ d3.chart("verticalBar", {
           .attr('x2', width)
           .attr('y1', height - 25)
           .attr('y2', height - 25)
-          .style('stroke', '#222')
-          .style('stroke-width', '1')
-          .style('shape-rendering', 'crispEdges');
+          .attr('class', 'barAxis')
+
 
 	    chart.layer('xlabels', chart.layers.xlabels, {
 	    	dataBind: function(data){

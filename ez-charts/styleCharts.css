@@ -1,7 +1,13 @@
 /*Bars*/
 
 rect{
-	fill: #8d9aab;
+	fill:#34495e;
+}
+
+.barAxis{
+	stroke:  #2c3e50 ;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
 }
 
 /*End Bars*/

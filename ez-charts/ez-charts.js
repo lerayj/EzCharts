@@ -1,13 +1,3 @@
-UI.registerHelper('EzChartLine', function(data){
-	console.log("I'm here: ", data);
-	return ("data");
-});
-
-UI.registerHelper('EzChartPie', function(data){
-	console.log("I'm here: ", data);
-	return ("data");
-});
-
 Template.EzChartBar.rendered = function() {
 	var test = d3.select('.chartBar');
  	var chart = d3.select('.chartBar')
