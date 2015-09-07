@@ -1,3 +1,10 @@
+/*Bars*/
+
+rect{
+	fill: #8d9aab;
+}
+
+/*End Bars*/
 .line {
 	stroke: steelblue;
 	stroke-width: 1.5px;
@@ -11,3 +18,10 @@
   stroke: #6e6e6e;
   shape-rendering: crispEdges;
 }
+/*Lines*/
+
+/*End Lines*/
+
+/*Donut*/
+
+/*End Donut*/

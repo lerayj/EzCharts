@@ -71,8 +71,8 @@ d3.chart('genericLines', {
 			return res.coord[0];
 		});
 		console.log("maxX: ", maxX, " maxY: ", maxY);
-		chart.x.domain([0, maxX]);
-		chart.y.domain([0, maxY]);
+		this.x.domain([0, maxX]);
+		this.y.domain([0, maxY]);
 
 		this.svgXAxis.call(this.xAxis);
 		this.svgYAxis.call(this.yAxis);

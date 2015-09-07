@@ -7,6 +7,8 @@ d3.chart("verticalBar", {
 	    height = +svg.getAttribute('height') - margin.top - margin.bottom,
 	    chart = this,
 	    marginBar = 10;
+	    
+	    chart.data = null;
 
 	    chart.layers = {};
 	    	      
@@ -21,6 +23,7 @@ d3.chart("verticalBar", {
 
 	    chart.layer('vBars', this.base.append('g'), {
 	    	dataBind: function(data){
+	    		chart.data = data;
 	    		var nbMargin = data.length - 1;
 	    		barWidth = (width/data.length) - ((nbMargin/data.length)*marginBar);
 	    		return this.selectAll('rect').data(data, function(elem){
@@ -58,11 +61,12 @@ d3.chart("verticalBar", {
 
 	    chart.layer('xlabels', chart.layers.xlabels, {
 	    	dataBind: function(data){
+	    	chart.data = data;
 		    return this.selectAll('text')
           		.data(data, function(d) { return d.name; });
 	    	},
 	       	insert : function() {
-	       		//problem update sur ajout d'un nouveau label barwidth n'est pas maj
+	       		//TOTEST: problem update sur ajout d'un nouveau label barwidth n'est pas maj
 		        return this.append('text')
 		          .classed('label', true)
 		          .attr('text-anchor', 'middle')
@@ -75,8 +79,8 @@ d3.chart("verticalBar", {
 		          });
 		      },
 		      events: {
-		    
 		      	merge: function(){
+		      		data = chart.data;
 		      		nbMargin = data.length - 1;
 	    			barWidth = (width/data.length) - ((nbMargin/data.length)*marginBar);
 		      		this.text(function(elem){
@@ -85,7 +89,6 @@ d3.chart("verticalBar", {
 		      		attr('transform', function(elem, idx){
 		      			return "translate(" + ((idx*barWidth) + (marginBar*idx) + barWidth/2) + ")";
 		      		}).attr('dy', "0");
-		      		console.log(this);
 		      		this.call(wrap, barWidth);
 		      	},
 		      	exit: function(){
@@ -104,7 +107,7 @@ d3.chart("verticalBar", {
 });
 
 
-//calculate margin by text height
+//TODO: calculate margin by text height
 function wrap(text, width) {
   text.each(function() {
     var text = d3.select(this),
@@ -112,11 +115,10 @@ function wrap(text, width) {
         word,
         line = [],
         lineNumber = 0,
-        lineHeight = 1.1, // ems
+        lineHeight = 1.1,
         y = text.attr("y"),
         dy = parseFloat(text.attr("dy")),
         tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-    	console.log("ty: ", dy, " Y: ", y);
     while (word = words.pop()) {
       line.push(word);
       tspan.text(line.join(" "));
