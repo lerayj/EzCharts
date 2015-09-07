@@ -53,7 +53,8 @@ Let's take a concrete example, with one template and his associated helper:
 ```
 
 ####Render
-![alt tag](./images/scBarChart.png)
+![alt text](./ez-charts/images/scBarChart.png "Default BarChart")
+
 That's it!
 
 
