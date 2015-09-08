@@ -149,6 +149,26 @@ To style one slice:
 }
 ```
 
+##_Comming_: Optimize data visualiation
+Sometime, you could have too much data, which would be irrelevant to display for they own.
+
+By adding two others params you can specify a minimum value.
+All values which aren't above this value would be aggregated on one unique representation
+part chart under the label specified on param.
+
+```javascript
+{{> EzChartBar width=widthTest height=heightTest data=dataTest aggregValue=10 aggregLabel="Other sales"}}
+```
+
+##_Comming_: Add others Charts
+
+You can extend this packages by adding some new generic charts.
+The package's core is easy to hack, you just have to add one line with the d3.chart filename of your chart.
+
+if it's for your own use: 
+Pull request
+Fork the project
+
 
 ##Dependencies
 EzCharts have only one direct dependency:
