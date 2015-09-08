@@ -18,12 +18,16 @@ d3.chart('genericDonut', {
 		  	return d.val; 
 		  })
 		  .sort(null);
-
+		chart.data = null;
 		var donutBase = chart.base.append('g').attr('class', 'slices')
 			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 		chart.layer('donutSlices', donutBase, {
 			dataBind: function(data){
-				return this.selectAll('.slice').data(pie(data));
+				chart.data = data;
+				console.log("pieData", pie(data));
+				return this.selectAll('.slice').data(pie(data), function(elem){
+					return elem.data.id;
+				});
 			},
 			insert: function(){
 				this.append('text').attr("transform", function(d) {
@@ -38,15 +42,20 @@ d3.chart('genericDonut', {
 			      .style("text-anchor", "middle")
 			      .text(function(d) { return d.data.label; });
 
-				return this.append('path').attr('class', 'slice').attr('class', function(elem, idx){
-					return 'slice-' + idx;
-				}).attr('fill', 'black').attr('d', arc);
+				return this.append('path').attr('class', 'slice');
 			},
 			events: {
-				merge: function(){
-
+				 merge: function(){
+				 	console.log("this? : ", this);
+				 	this.attr('class', function(elem, idx){
+						return 'slice slice-' + idx;
+					}).attr('fill', 'black').attr('d', arc);
 				}
 			}
 		});
+	},
+	transform: function(data){
+		console.log("trans: ", data);
+		return data;
 	}
 });

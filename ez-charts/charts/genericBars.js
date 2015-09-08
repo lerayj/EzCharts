@@ -1,31 +1,25 @@
-d3.chart("verticalBar", {
+d3.chart("genericBars", {
 	initialize: function(){
 
-		var margin = {top: 10, right: 10, bottom: 100, left: 10}
+		var margin = {top: 10, right: 10, bottom: 50, left: 10}
 		var svg = this.base.node(),
-	    width = +svg.getAttribute('width') - margin.left - margin.right,
-	    height = +svg.getAttribute('height') - margin.top - margin.bottom,
+	    width = +svg.getAttribute('width'),
+	    height = +svg.getAttribute('height'),
+	    heightChart = height - margin.top - margin.bottom,
+	    widthChart = width - margin.left - margin.right,
 	    chart = this,
 	    marginBar = 10;
 	    
-	    chart.data = null;
-
-	    chart.layers = {};
+	    chart.data = null; 
 	    	      
 	    this.scaleY = d3.scale.linear()
-	      .range([height, 0]);
-	    var xAxis = d3.svg.axis().orient("bottom")
-
-	    chart.layers.xlabels = chart.base.append('g')
-	      .classed('xlabels', true)
-	      .attr('height', 20)
-	      .attr("transform", "translate(0, " + (height - 5) + ')');
+	      .range([heightChart, 0]);
 
 	    chart.layer('vBars', this.base.append('g'), {
 	    	dataBind: function(data){
 	    		chart.data = data;
 	    		var nbMargin = data.length - 1;
-	    		barWidth = (width/data.length) - ((nbMargin/data.length)*marginBar);
+	    		barWidth = (widthChart/data.length) - ((nbMargin/data.length)*marginBar);
 	    		return this.selectAll('rect').data(data, function(elem){
 	    			return elem.id;
 	    		});
@@ -34,13 +28,13 @@ d3.chart("verticalBar", {
 	    		return this.append('rect');
 	    	},
 	    	events:{
-	    		merge: function(){
-	    			this.attr('x', function(elem, idx){
+	    		"merge:transition": function(){
+	    			this.duration(1000).attr('x', function(elem, idx){
 	    				return (idx*barWidth) + (marginBar*idx);
 	    			}).attr('y', function(elem, idx){
 	    				return chart.scaleY(elem.value) - 25;
 	    			}).attr('height', function(elem, idx){
-	    				return height - chart.scaleY(elem.value);
+	    				return heightChart - chart.scaleY(elem.value);
 	    			}).attr('width', function(elem, idx){
 	    				return barWidth;
 	    			});
@@ -52,13 +46,17 @@ d3.chart("verticalBar", {
 	    });
 
 	    this.base.append('line').attr('x1', 0)
-          .attr('x2', width)
-          .attr('y1', height - 25)
-          .attr('y2', height - 25)
+          .attr('x2', widthChart)
+          .attr('y1', heightChart - 25)
+          .attr('y2', heightChart - 25)
           .attr('class', 'barAxis')
 
+	    var xlabels = chart.base.append('g')
+	      .classed('xlabels', true)
+	      .attr('height', 20)
+	      .attr("transform", "translate(0, " + (heightChart - 5) + ')');
 
-	    chart.layer('xlabels', chart.layers.xlabels, {
+	    chart.layer('xlabels', xlabels, {
 	    	dataBind: function(data){
 	    	chart.data = data;
 		    return this.selectAll('text')
@@ -81,7 +79,7 @@ d3.chart("verticalBar", {
 		      	merge: function(){
 		      		data = chart.data;
 		      		nbMargin = data.length - 1;
-	    			barWidth = (width/data.length) - ((nbMargin/data.length)*marginBar);
+	    			barWidth = (widthChart/data.length) - ((nbMargin/data.length)*marginBar);
 		      		this.text(function(elem){
 		      			return elem.name;
 		      		}).
@@ -105,8 +103,6 @@ d3.chart("verticalBar", {
 	}
 });
 
-
-//TODO: calculate margin by text height
 function wrap(text, width) {
   text.each(function() {
     var text = d3.select(this),

@@ -1,7 +1,12 @@
-- label sur les donuts
-- margin bottom dynamic sur barchart pour les labels
-- scale en 0 + dynamic left margin lineChart
-- changer le style des axis lineChart
 
-Improvements:
-améliorer le systeme d'ajout de chart
+separer les layer des charts pour organisation
+1 - marginBar doit etre la moitié d'une largeur d'une bar (par scale X ou al la volé)
+4 - donut faire le merge déplacer du insert pour redraw
+erreur js sur refresh data line
+
+bonus:
+- margin bottom dynamic sur barchart pour les labels
+- améliorer le systeme d'ajout de chart
+- add color managment sur plus de 10 slices sinon default
+- Donut, depuis la ligne d'ajout, passer un tableau des xpremieres couleurs
+- pouvoir spécifier les interpolation des lines

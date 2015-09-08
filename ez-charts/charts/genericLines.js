@@ -1,3 +1,4 @@
+
 d3.chart('genericLines', {
 	initialize: function(){
 		var svg = this.base.node(),
@@ -8,7 +9,7 @@ d3.chart('genericLines', {
 		var margin = {bottom: 50, left: 30, top: 5, right: 10};
 
 	    chart.x = d3.scale.linear()
-	      .range([0, width-margin.left-margin.right]);
+	      .range([margin.left, width-margin.right]);
 
 	    chart.y = d3.scale.linear()
 	      .range([height-margin.bottom-margin.top-1, 0]);
@@ -28,9 +29,9 @@ d3.chart('genericLines', {
 	        .y(function (d) {
 	        	return chart.y(d.coord[1]);
 	        })
-	        .interpolate('basis');
+	       .interpolate('cardinal');
 
-		chart.layer("lines", this.base.append('g').attr('transform', 'translate(' + (margin.left || 0) + ',0)'), {
+		chart.layer("lines", this.base.append('g'), {
 			dataBind: function(data){
 				return this.selectAll(".line").data(data, function(elem){
 					return elem.id;
@@ -40,16 +41,19 @@ d3.chart('genericLines', {
 				return this.append('path').attr('class', 'line');
 			},
 			events: {
-				enter: function(){
-		          this.attr('d', function (line) {
+				"merge:transition": function(){
+		          this.duration(1000).attr('d', function (line) {
 		            return svgLine(line.points);
 		          });
-				}
+				},
+				exit: function(){
+	    			this.remove();
+	    		}
 			},
 		});
 		this.svgXAxis = this.base.append('g')
 	      .attr('class', 'axis')
-	      .attr('transform', 'translate(' + (margin.left || 0) + ',' + (height-margin.bottom-1) + ')')
+	      .attr('transform', 'translate(0,' + (height-margin.bottom-1) + ')')
 
 	    this.svgYAxis = this.base.append('g')
 	      .attr('class', 'axis')
@@ -59,8 +63,10 @@ d3.chart('genericLines', {
 	transform: function(data){
 		var maxY = d3.max(data, function(line){
 			var res = _.max(line.points, function(pts){
+
 				return pts.coord[1];
 			});
+			//console.log("POINTS: ", res);
 			return res.coord[1];
 		});
 		var maxX = d3.max(data, function(line){
@@ -82,7 +88,7 @@ d3.chart('genericLines', {
 			});
 			return res.coord[0];
 		});
-
+		//console.log("DATA: ", data);
 		this.x.domain([minX, maxX]);
 		this.y.domain([minY, maxY]);
 
