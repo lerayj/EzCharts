@@ -2,3 +2,6 @@
 - margin bottom dynamic sur barchart pour les labels
 - scale en 0 + dynamic left margin lineChart
 - changer le style des axis lineChart
+
+Improvements:
+améliorer le systeme d'ajout de chart

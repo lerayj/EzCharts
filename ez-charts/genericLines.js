@@ -30,7 +30,7 @@ d3.chart('genericLines', {
 	        })
 	        .interpolate('basis');
 
-		chart.layer("lines", this.base.append('g'), {
+		chart.layer("lines", this.base.append('g').attr('transform', 'translate(' + (margin.left || 0) + ',0)'), {
 			dataBind: function(data){
 				return this.selectAll(".line").data(data, function(elem){
 					return elem.id;
@@ -42,7 +42,6 @@ d3.chart('genericLines', {
 			events: {
 				enter: function(){
 		          this.attr('d', function (line) {
-		            //console.log(line);
 		            return svgLine(line.points);
 		          });
 				}
@@ -84,7 +83,6 @@ d3.chart('genericLines', {
 			return res.coord[0];
 		});
 
-		console.log("maxX: ", maxX, " maxY: ", maxY);
 		this.x.domain([minX, maxX]);
 		this.y.domain([minY, maxY]);
 
