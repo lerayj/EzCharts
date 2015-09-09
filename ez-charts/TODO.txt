@@ -1,8 +1,15 @@
 
 separer les layer des charts pour organisation
-1 - marginBar doit etre la moitié d'une largeur d'une bar (par scale X ou al la volé)
 4 - donut faire le merge déplacer du insert pour redraw
 erreur js sur refresh data line
+voir pour responsive
+voir bubble chart
+double donuts pour comparer periode diff
+comming avec un M
+voir gradiant sur 10 couleurs
+tester avec des données analytics
+differenciation au niveau des source de données
+voir un abstract model de donnée
 
 bonus:
 - margin bottom dynamic sur barchart pour les labels

@@ -24,7 +24,6 @@ d3.chart('genericDonut', {
 		chart.layer('donutSlices', donutBase, {
 			dataBind: function(data){
 				chart.data = data;
-				console.log("pieData", pie(data));
 				return this.selectAll('.slice').data(pie(data), function(elem){
 					return elem.data.id;
 				});
@@ -46,7 +45,6 @@ d3.chart('genericDonut', {
 			},
 			events: {
 				 merge: function(){
-				 	console.log("this? : ", this);
 				 	this.attr('class', function(elem, idx){
 						return 'slice slice-' + idx;
 					}).attr('fill', 'black').attr('d', arc);
@@ -55,7 +53,6 @@ d3.chart('genericDonut', {
 		});
 	},
 	transform: function(data){
-		console.log("trans: ", data);
 		return data;
 	}
 });
