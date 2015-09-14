@@ -1,3 +1,20 @@
+//default but could be overloaded
+var EzChartsConfig = {
+	'clickBarCb': function(elem, chart){
+		if(elem.aggregated){
+			console.log("node: ", chart.base.node().querySelectorAll(":scope *"));
+			d3.selectAll(chart.base.node().querySelectorAll(":scope *")).remove();
+			console.log("baseNode: ", chart.base.node());
+			var donut = d3.select(chart.base.node())
+			 .chart('genericDonut');
+			donut.draw(chart.aggregatedData);
+			console.log("aggreg data: ", chart.aggregatedData);
+		}
+	},
+	'transformCb': function(){
+
+	}
+};
 
 d3.chart("genericBars", {
 	initialize: function(){
@@ -12,7 +29,6 @@ d3.chart("genericBars", {
 	    chart = this,
 	    barPad = 0.33,
 	    margeLabels = 10;
-	    
 	    this.aggregatedData = new Array();
 
 	    this.aggregLabel = "Others";
@@ -89,16 +105,47 @@ d3.chart("genericBars", {
 		        return this.append('text').classed('label', true)
 		        .on('click', function(elem){
     				if(elem.aggregated){
-    					console.log("node: ", chart.base.node().querySelectorAll(":scope *"));
-    					d3.selectAll(chart.base.node().querySelectorAll(":scope *")).remove();
-    					console.log("baseNode: ", chart.base.node());
-						var donut = d3.select(chart.base.node())
-						 .chart('genericDonut');
-    					donut.draw(chart.aggregatedData);
-    					console.log("aggreg data: ", chart.aggregatedData);
+    					console.log("selection: ", d3.selectAll('rect')[0].length);
+    					var nbSelectedElem = d3.selectAll('rect')[0].length;
+    					d3.selectAll('rect').transition().each("start",function(elem,i){
+							console.log("idx: ", i);
+							console.log("i: ", i, " nb/2: ", Math.round(nbSelectedElem/2) - 1);
+							if(nbSelectedElem%2 != 0 && i == Math.round(nbSelectedElem/2) - 1){
+								console.log("OK");
+								d3.select(this)       
+								.transition().duration(1000).delay(nbSelectedElem*500).ease("bounce")        
+								.attr("y", -height).style('fill', 'red').each("end", function(elem, i){
+								console.log("end of: ", i);
+								
+									var donut = d3.select(chart.base.node())
+										.chart('genericDonut');
+				    					donut.draw(chart.aggregatedData);
+								
+							});
+								
+							}else{
+								if (i%2 == 0){
+									d3.select(this)       
+										.transition().duration(1000).delay(i*500)         
+										.attr("x", -width);
+									}								
+								else{
+									d3.select(this)       
+										.transition().duration(1000).delay(i*500)        
+										.attr("x",width);
+									}	
+								}
 
-	    				}
-    				
+							});
+
+
+
+    		// 			console.log("node: ", chart.base.node().querySelectorAll(":scope *"));
+    		// 			d3.selectAll(chart.base.node().querySelectorAll(":scope *")).remove();
+    		// 			console.log("baseNode: ", chart.base.node());
+						
+    		// 			console.log("aggreg data: ", chart.aggregatedData);
+	    			}
     			});
 		      },
 		      events: {

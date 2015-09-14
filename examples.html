@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./examples.css">
+
+  <script type="text/javascript" src="./dependencies/jquery-2.1.3.js"></script>
+  <script type="text/javascript" src="./dependencies/underscore.js"></script>
+  <script type="text/javascript" src="./dependencies/d3/d3.js"></script>
+  <script type="text/javascript" src="./dependencies/d3/d3.chart.js"></script>
+
+  <script type="text/javascript" src="./charts/genericBars.js"></script>
+  <script type="text/javascript" src="./charts/genericDonut.js"></script>
+
+  <script type="text/javascript" src="./examples.js"></script>
+
+</head>
+<body>
+  <div class="chart"></div>
+
+  <script type="text/javascript">
+    var chart = d3.select('.chart')
+        .append('svg')
+          .attr('width', 500)
+          .attr('height', 300)
+          .chart('genericBars');
+
+    var data = [
+      {id: 0, label: "Organic Abandonners", val: 350},
+      {id: 1, label: "Retargeted Abandonners", val: 20},
+      {id: 2, label: "Reengaged People", val: 10},
+      {id: 3, label: "Tiny Val", val: 5},
+      {id: 4, label: "Tiny Val 2", val: 3},
+      {id: 5, label: "Tiny Val 3", val: 2},
+      {id: 6, label: "Tiny Val 4", val: 1},
+    ];
+
+    chart.draw(data);
+
+
+  </script>
+</body>
+</html>
