@@ -1,5 +1,8 @@
+
 d3.chart("genericBars", {
 	initialize: function(){
+
+
 		var margin = {top: 10, right: 10, bottom: 50, left: 10},
 		svg = this.base.node(),
 	    width = +svg.getAttribute('width'),
@@ -10,7 +13,9 @@ d3.chart("genericBars", {
 	    barPad = 0.33,
 	    margeLabels = 10;
 	    
-	    this.aggregName = "Others";
+	    this.aggregatedData = new Array();
+
+	    this.aggregLabel = "Others";
 	    this.aggregLimit = 5;	      
 	    this.scaleY = d3.scale.linear()
 	      .range([heightChart, 0]);
@@ -36,10 +41,8 @@ d3.chart("genericBars", {
 	    				d3.select(this).classed("hovered", false);
 	    			})	    		
 	    		.on('click', function(elem){
-	    				var name = d3.select(this).data()[0].name;
-	    				if(name == chart.aggregName){
-	    					console.log("clicked and hide");
-	    					chart.remove();
+	    				if(elem.aggregated){
+	    					svg.transition();
 
 	    				}
 	    			});
@@ -51,10 +54,10 @@ d3.chart("genericBars", {
 	    				return chart.scaleX(elem.id);
 	    			})
 					.attr('y', function(elem, idx){
-	    				return chart.scaleY(elem.value);
+	    				return chart.scaleY(elem.val);
 	    			})
 	    			.attr('height', function(elem, idx){
-	    				return heightChart - chart.scaleY(elem.value);
+	    				return heightChart - chart.scaleY(elem.val);
 	    			})
 	    			.attr('width', function(elem, idx){
 	    				return chart.scaleX.rangeBand();
@@ -80,23 +83,29 @@ d3.chart("genericBars", {
 	    chart.layer('xlabels', this.xlabels, {
 	    	dataBind: function(data){
 		    return this.selectAll('text')
-          		.data(data, function(d) { return d.name; });
+          		.data(data, function(d) { return d.label; });
 	    	},
 	       	insert : function() {
 		        return this.append('text').classed('label', true)
 		        .on('click', function(elem){
-    				var name = d3.select(this).data()[0].name;
-    				if(name == chart.aggregName){
-    					console.log("clicked and hide");
-    					$('.chartBar').fadeOut();
-    				}
+    				if(elem.aggregated){
+    					console.log("node: ", chart.base.node().querySelectorAll(":scope *"));
+    					d3.selectAll(chart.base.node().querySelectorAll(":scope *")).remove();
+    					console.log("baseNode: ", chart.base.node());
+						var donut = d3.select(chart.base.node())
+						 .chart('genericDonut');
+    					donut.draw(chart.aggregatedData);
+    					console.log("aggreg data: ", chart.aggregatedData);
+
+	    				}
+    				
     			});
 		      },
 		      events: {
 		      	merge: function(){
 
 		      		this.text(function(elem){
-		      			return elem.name;
+		      			return elem.label;
 		      		})
 		      		.attr('x', function(elem, idx) {
 		            	return chart.scaleX(elem.id) + chart.scaleX.rangeBand()/2;
@@ -128,13 +137,13 @@ d3.chart("genericBars", {
 			events: {
 				"merge:transition": function(){
 					this.text(function(elem){
-		      			return elem.value;
+		      			return elem.val;
 		      		})
 		      		.attr('x', function(elem){
 		      			return chart.scaleX(elem.id) + chart.scaleX.rangeBand()/2;
 		      		}).duration(1000)
 		      		.attr('y', function(elem){
-		      			var heightBar = heightChart - chart.scaleY(elem.value);
+		      			var heightBar = heightChart - chart.scaleY(elem.val);
 		      			var percentageBar = (heightBar*100)/heightChart;
 		      			if (percentageBar > 20){
 		      				return heightChart - (heightBar/2);
@@ -153,30 +162,29 @@ d3.chart("genericBars", {
 	transform: function(data){
 
 		var aggregData = new Array();
-		var temp = new Array();
 		var Alimit = this.aggregLimit;
+		this.aggregatedData = new Array();
 		_.each(data, function(elem, i){
-			if(elem.value < Alimit){
-				console.log("LA");
-				temp.push(elem);
+			if(elem.val < Alimit){
+				this.aggregatedData.push(elem);
 			}
-		});
-		console.log("val: ", temp.length);
-		if(temp.length > 1){
+		},this);
+		console.log("val: ", this.aggregatedData.length);
+		if(this.aggregatedData.length > 1){
 			var totalAggreg = 0;
 			_.each(data, function(elem, i){
-			if(elem.value < Alimit)
-				totalAggreg += elem.value;
+			if(elem.val < Alimit)
+				totalAggreg += elem.val;
 			else
 				aggregData.push(elem);
 			});
-			aggregData.push({id: aggregData.length, name: this.aggregName, value: totalAggreg});
+			aggregData.push({id: aggregData.length, label: this.aggregLabel, val: totalAggreg, aggregated: true});
 			data = aggregData;
 			console.log("data: ", data);
 		}
 
 		var maxVal = d3.max(data, function(elem){
-			return elem.value;
+			return elem.val;
 		});
 	    this.scaleY.domain([0, maxVal]);
 

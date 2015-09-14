@@ -3,9 +3,9 @@ d3.chart('genericDonut', {
 		var svg = this.base.node(),
 		width = +svg.getAttribute('width'),
 		height = +svg.getAttribute('height'),
-		
-		
+
 		chart = this;
+
 		var margin = {bottom: 10, left: 10, top: 30, right: 10};
 		var radius = Math.min(width - (margin.left + margin.right), height - (margin.bottom + margin.top)) / 2;
 		var rLabel = radius + 20;
@@ -19,6 +19,7 @@ d3.chart('genericDonut', {
 		  })
 		  .sort(null);
 		chart.data = null;
+
 		var donutBase = chart.base.append('g').attr('class', 'slices')
 			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 		chart.layer('donutSlices', donutBase, {
