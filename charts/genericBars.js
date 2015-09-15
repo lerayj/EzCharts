@@ -1,15 +1,15 @@
 //default but could be overloaded
-var EzChartsConfig = {
+var EzChartsConfig = { // TODO: Cette variable est global. Mais il n'y a pas que le bar chart qui va l'utilisé si ?
 	'clickBarCb': function(elemClicked, chart){
  		//overload this callbackto customize
 	},
 	'clickLabelCb': function(labelClicked, chart){
 		//overload this callbackto customize
 	},
-	'transformCb': function(){
+	'transformCb': function(){ // TODO: set argument et return valeur par default
 		//overload this callbackto customize
 	},
-	"maxBars" : 5,
+	"maxBars" : 5, // TODO: Not used
 	"aggregateUnder": 5,
 	"aggregatedTitle": "Others"
 };
@@ -26,22 +26,23 @@ d3.chart("genericBars", {
 		this.widthChart = chart.width - this.margin.left - this.margin.right;
 
 	    this.aggregatedData = [];
-	    this.barPad = 0.33;
+	    this.barPad = 0.33; // TODO: En théorie c'est du margin pas du padding. Mais c'est un detail.
 	    this.margeLabels = 10;
 
 	    this.scaleY = d3.scale.linear()
 	      .range([chart.heightChart, 0]);
 
-	    var vBarsLayer = this.base.append('g')
+	    var vBarsLayer = this.base.append('g') // TODO: v ?
 	    .attr('transform', 'translate(' + chart.margin.left + ',0)')
 	    .classed('vBars', true);
 
-	    chart.layer('vBars', vBarsLayer, {
+	    chart.layer('vBars', vBarsLayer, { // TODO: wtf v ?
 	    	dataBind: function(data){
+	    		// TODO: Declare ça plus haut. Et change le domain et le range dans le transform
 		    	chart.scaleX = d3.scale.ordinal().domain(data.map(function(d){
 			    	return d.id;
 		    	}))
-		    	.rangeBands([0, chart.widthChart - chart.margin.left - chart.margin.right], chart.barPad, 0);
+		    	.rangeBands([0, chart.widthChart - chart.margin.left - chart.margin.right], chart.barPad, 0); // Ca fait que tu retire deux fois les margin ici non ?
 	    		
 	    		return this.selectAll('rect').data(data, function(elem){
 	    			return elem.id;
@@ -49,6 +50,7 @@ d3.chart("genericBars", {
 	    	},
 	    	insert: function(){
 	    		return this.append('rect')
+	    		// TODO: Pourquoi pas de :hover dans le css ? Ca a fait ses preuve comme truc.
 	    		.on('mouseover', function(elem){
 	    				d3.select(this).classed("hovered", true);
 	    			})
@@ -56,7 +58,7 @@ d3.chart("genericBars", {
 	    				d3.select(this).classed("hovered", false);
 	    			})	    		
 	    		.on('click', function(elem){
-	    				
+	    				// TODO: Fat callback !
 	    			});
 	    	},
 	    	events:{
@@ -82,7 +84,7 @@ d3.chart("genericBars", {
 	    });
 
 	    this.base.append('line').attr('x1', 0 + chart.margin.left)
-          .attr('x2', chart.widthChart - chart.margin.right)
+          .attr('x2', chart.widthChart - chart.margin.right) // TODO: je comprend pas ton widthChart en faite. Il a l'air de servir a rien tu l'utilise jamais solo
           .attr('y1', chart.heightChart)
           .attr('y2', chart.heightChart)
           .attr('class', 'barAxis')
@@ -93,8 +95,8 @@ d3.chart("genericBars", {
 
 	    this.xLabelLayer = chart.layer('xlabels', this.xlabels, {
 	    	dataBind: function(data){
-		    return this.selectAll('text')
-          		.data(data, function(d) { return d.label; });
+		    	return this.selectAll('text')
+          			.data(data, function(d) { return d.label; });
 	    	},
 	       	insert : function() {
 		        return this.append('text').classed('label', true)
@@ -111,10 +113,10 @@ d3.chart("genericBars", {
 		      		.attr('x', function(elem, idx) {
 		            	return chart.scaleX(elem.id) + chart.scaleX.rangeBand()/2;
 		          	})
-		          	.attr('dy', "0")
-		          	.attr('text-anchor', 'middle');
+		          	.attr('dy', "0") // TODO: pourquoi ici et pas dans le enter ?
+		          	.attr('text-anchor', 'middle'); // TODO: Pareil
 
-		      		this.call(wrap, chart.scaleX.rangeBand());
+		      		this.call(wrap, chart.scaleX.rangeBand()); // Style le call ici
 		      	},
 		      	"exit:transition": function(){
 		      		this.remove();
@@ -144,6 +146,7 @@ d3.chart("genericBars", {
 		      			return chart.scaleX(elem.id) + chart.scaleX.rangeBand()/2;
 		      		}).duration(1000)
 		      		.attr('y', function(elem){
+		      			/********* TODO: CA SENS LA BIDOUILLE *******/
 		      			var heightBar = chart.heightChart - chart.scaleY(elem.val);
 		      			var percentageBar = (heightBar*100)/chart.heightChart;
 		      			if (percentageBar > 20){
@@ -151,8 +154,9 @@ d3.chart("genericBars", {
 		      			}else{
 		      				return chart.heightChart - (heightBar + chart.margin.top+5);
 		      			}
+		      			/********************************************/
 		      		})
-		      		.attr('text-anchor', 'middle');
+		      		.attr('text-anchor', 'middle'); // TODO: text-anchor dans une transition ?
 				},
 		      	"exit:transition": function(){
 		      		console.log("exit");
@@ -172,6 +176,7 @@ d3.chart("genericBars", {
 		var totalValue = _.reduce(data, function(memo, elem){
 			return memo + elem.val;
 		},0);
+
 		var underPercentage = (EzChartsConfig.aggregateUnder/100)*totalValue;
 
 		// TODO: Use d3.sum
@@ -183,21 +188,26 @@ d3.chart("genericBars", {
 			else
 				aggregData.push(elem);
 		},chart);
+
 		if(chart.aggregatedData.length > 1){
 			aggregData.push({id: data.length + 1, label: EzChartsConfig.aggregatedTitle, val: totalAggreg, aggregated: true});
 		}
-		data = EzChartsConfig.transformCb(aggregData, chart);
+
+		data = EzChartsConfig.transformCb(aggregData, chart); // TODO: La fonction par default ne renvoit rien. Donc ta data sera undefined si la fonction n'est pas overload.
 		console.log("transformedData: ", this.aggregatedData);
+
 		_.each(data, function(elem, idx, arr){
 			if(elem.aggregated && elem.val == 0)
 				arr.splice(idx, 1);
 		});
+
 		console.log("transform");
 		var maxVal = d3.max(data, function(elem){
 			return elem.val;
 		});
 	    this.scaleY.domain([0, maxVal]);
-	    return data;
+
+	    return data; // TODO: Dans l'idee tu devrais renvoyer la data modifier autant que possible. Plutot que de tout stock sur le chart.
 	}
 });
 
