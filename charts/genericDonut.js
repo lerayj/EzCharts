@@ -25,11 +25,15 @@ d3.chart('genericDonut', {
 		chart.layer('donutSlices', donutBase, {
 			dataBind: function(data){
 				chart.data = data;
+				this.append('text')
+				.text("lol");
+				//.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 				return this.selectAll('.slice').data(pie(data), function(elem){
 					return elem.data.id;
 				});
 			},
 			insert: function(){
+
 				this.append('text').attr("transform", function(d) {
 					var c = arc.centroid(d),
 					x = c[0],

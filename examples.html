@@ -34,10 +34,25 @@
       {id: 5, label: "Tiny Val 3", val: 2},
       {id: 6, label: "Tiny Val 4", val: 1},
     ];
-
     chart.draw(data);
+
+    function rdmData(){
+      var data = [
+      {id: 0, label: "Organic Abandonners", val: Math.floor(Math.random() * 500)},
+      {id: 1, label: "Retargeted Abandonners", val: Math.floor(Math.random() * 500)},
+      {id: 2, label: "Reengaged People", val: Math.floor(Math.random() * 500)},
+      {id: 3, label: "Tiny Val", val: Math.floor(Math.random() * 500)},
+      {id: 4, label: "Tiny Val 2", val: Math.floor(Math.random() * 500)},
+      {id: 5, label: "Tiny Val 3", val: Math.floor(Math.random() * 500)},
+      {id: 6, label: "Tiny Val 4", val: Math.floor(Math.random() * 500)},
+    ];
+    chart.draw(data);
+    }
+
+
 
 
   </script>
+  <button onclick="rdmData()">Generate Data</button>
 </body>
 </html>

@@ -1,48 +1,47 @@
 //default but could be overloaded
 var EzChartsConfig = {
-	'clickBarCb': function(elem, chart){
-		if(elem.aggregated){
-			console.log("node: ", chart.base.node().querySelectorAll(":scope *"));
-			d3.selectAll(chart.base.node().querySelectorAll(":scope *")).remove();
-			console.log("baseNode: ", chart.base.node());
-			var donut = d3.select(chart.base.node())
-			 .chart('genericDonut');
-			donut.draw(chart.aggregatedData);
-			console.log("aggreg data: ", chart.aggregatedData);
-		}
+	'clickBarCb': function(elemClicked, chart){
+ 		//overload this callbackto customize
+	},
+	'clickLabelCb': function(labelClicked, chart){
+		//overload this callbackto customize
 	},
 	'transformCb': function(){
-
-	}
+		//overload this callbackto customize
+	},
+	"maxBars" : 5,
+	"aggregateUnder": 5,
+	"aggregatedTitle": "Others"
 };
 
 d3.chart("genericBars", {
 	initialize: function(){
+		var chart = this;
 
+	    this.svg = this.base.node();
+	   	this.margin = {top: 10, right: 10, bottom: 50, left: 10};
+	   	this.width = +this.svg.getAttribute('width');
+	    this.height = +this.svg.getAttribute('height');
+		this.heightChart = chart.height - this.margin.top - this.margin.bottom;
+		this.widthChart = chart.width - this.margin.left - this.margin.right;
 
-		var margin = {top: 10, right: 10, bottom: 50, left: 10},
-		svg = this.base.node(),
-	    width = +svg.getAttribute('width'),
-	    height = +svg.getAttribute('height'),
-	    heightChart = height - margin.top - margin.bottom,
-	    widthChart = width - margin.left - margin.right,
-	    chart = this,
-	    barPad = 0.33,
-	    margeLabels = 10;
-	    this.aggregatedData = new Array();
+	    this.aggregatedData = [];
+	    this.barPad = 0.33;
+	    this.margeLabels = 10;
 
-	    this.aggregLabel = "Others";
-	    this.aggregLimit = 5;	      
 	    this.scaleY = d3.scale.linear()
-	      .range([heightChart, 0]);
+	      .range([chart.heightChart, 0]);
 
-	    var vBarsLayer = this.base.append('g').attr('transform', 'translate(' + margin.left + ',0)').classed('vBars', true);
+	    var vBarsLayer = this.base.append('g')
+	    .attr('transform', 'translate(' + chart.margin.left + ',0)')
+	    .classed('vBars', true);
+
 	    chart.layer('vBars', vBarsLayer, {
 	    	dataBind: function(data){
 		    	chart.scaleX = d3.scale.ordinal().domain(data.map(function(d){
 			    	return d.id;
 		    	}))
-		    	.rangeBands([0, widthChart - margin.left - margin.right], barPad, 0);
+		    	.rangeBands([0, chart.widthChart - chart.margin.left - chart.margin.right], chart.barPad, 0);
 	    		
 	    		return this.selectAll('rect').data(data, function(elem){
 	    			return elem.id;
@@ -57,10 +56,7 @@ d3.chart("genericBars", {
 	    				d3.select(this).classed("hovered", false);
 	    			})	    		
 	    		.on('click', function(elem){
-	    				if(elem.aggregated){
-	    					svg.transition();
-
-	    				}
+	    				
 	    			});
 	    	},
 	    	events:{
@@ -73,30 +69,29 @@ d3.chart("genericBars", {
 	    				return chart.scaleY(elem.val);
 	    			})
 	    			.attr('height', function(elem, idx){
-	    				return heightChart - chart.scaleY(elem.val);
+	    				return chart.heightChart - chart.scaleY(elem.val);
 	    			})
 	    			.attr('width', function(elem, idx){
 	    				return chart.scaleX.rangeBand();
 	    			});
 	    		},
-	    		exit: function(){
+	    		"exit:transition": function(){
 	    			this.remove();
 	    		}
 	    	}
 	    });
 
-	    this.base.append('line').attr('x1', 0 + margin.left)
-          .attr('x2', widthChart - margin.right)
-          .attr('y1', heightChart)
-          .attr('y2', heightChart)
+	    this.base.append('line').attr('x1', 0 + chart.margin.left)
+          .attr('x2', chart.widthChart - chart.margin.right)
+          .attr('y1', chart.heightChart)
+          .attr('y2', chart.heightChart)
           .attr('class', 'barAxis')
 
 	    this.xlabels = chart.base.append('g')
 	      .classed('xlabels', true)
-	      .attr("transform", "translate(" + margin.left + "," + (height - margin.bottom + margeLabels) + ')');
+	      .attr("transform", "translate(" + chart.margin.left + "," + (chart.height - chart.margin.bottom + chart.margeLabels) + ')');
 
-	    
-	    chart.layer('xlabels', this.xlabels, {
+	    this.xLabelLayer = chart.layer('xlabels', this.xlabels, {
 	    	dataBind: function(data){
 		    return this.selectAll('text')
           		.data(data, function(d) { return d.label; });
@@ -104,48 +99,7 @@ d3.chart("genericBars", {
 	       	insert : function() {
 		        return this.append('text').classed('label', true)
 		        .on('click', function(elem){
-    				if(elem.aggregated){
-    					console.log("selection: ", d3.selectAll('rect')[0].length);
-    					var nbSelectedElem = d3.selectAll('rect')[0].length;
-    					d3.selectAll('rect').transition().each("start",function(elem,i){
-							console.log("idx: ", i);
-							console.log("i: ", i, " nb/2: ", Math.round(nbSelectedElem/2) - 1);
-							if(nbSelectedElem%2 != 0 && i == Math.round(nbSelectedElem/2) - 1){
-								console.log("OK");
-								d3.select(this)       
-								.transition().duration(1000).delay(nbSelectedElem*500).ease("bounce")        
-								.attr("y", -height).style('fill', 'red').each("end", function(elem, i){
-								console.log("end of: ", i);
-								
-									var donut = d3.select(chart.base.node())
-										.chart('genericDonut');
-				    					donut.draw(chart.aggregatedData);
-								
-							});
-								
-							}else{
-								if (i%2 == 0){
-									d3.select(this)       
-										.transition().duration(1000).delay(i*500)         
-										.attr("x", -width);
-									}								
-								else{
-									d3.select(this)       
-										.transition().duration(1000).delay(i*500)        
-										.attr("x",width);
-									}	
-								}
-
-							});
-
-
-
-    		// 			console.log("node: ", chart.base.node().querySelectorAll(":scope *"));
-    		// 			d3.selectAll(chart.base.node().querySelectorAll(":scope *")).remove();
-    		// 			console.log("baseNode: ", chart.base.node());
-						
-    		// 			console.log("aggreg data: ", chart.aggregatedData);
-	    			}
+		        	EzChartsConfig.clickBarCb(elem, chart);
     			});
 		      },
 		      events: {
@@ -162,7 +116,7 @@ d3.chart("genericBars", {
 
 		      		this.call(wrap, chart.scaleX.rangeBand());
 		      	},
-		      	exit: function(){
+		      	"exit:transition": function(){
 		      		this.remove();
 		      	}
 		      }   	
@@ -170,9 +124,9 @@ d3.chart("genericBars", {
 
 	    this.tooltipVals = chart.base.append('g')
 	      .classed('tooltipVals', true)
-	      .attr("transform", "translate(" + margin.left + "," + margin.top + ')');
+	      .attr("transform", "translate(" + chart.margin.left + "," + chart.margin.top + ')');
 
-		chart.layer('tooltipVals', this.tooltipVals, {
+		this.TooltipVals = chart.layer('tooltipVals', this.tooltipVals, {
 			dataBind: function(data){
 				return this.selectAll('.tooltipVal').data(data, function(d){
 					return d.id;
@@ -190,51 +144,55 @@ d3.chart("genericBars", {
 		      			return chart.scaleX(elem.id) + chart.scaleX.rangeBand()/2;
 		      		}).duration(1000)
 		      		.attr('y', function(elem){
-		      			var heightBar = heightChart - chart.scaleY(elem.val);
-		      			var percentageBar = (heightBar*100)/heightChart;
+		      			var heightBar = chart.heightChart - chart.scaleY(elem.val);
+		      			var percentageBar = (heightBar*100)/chart.heightChart;
 		      			if (percentageBar > 20){
-		      				return heightChart - (heightBar/2);
+		      				return chart.heightChart - (heightBar/2);
 		      			}else{
-		      				return heightChart - (heightBar + margin.top+5);
+		      				return chart.heightChart - (heightBar + chart.margin.top+5);
 		      			}
 		      		})
 		      		.attr('text-anchor', 'middle');
 				},
-		      	exit: function(){
+		      	"exit:transition": function(){
+		      		console.log("exit");
 		      		this.remove();
 		      	}
 			}
 		});
 	},
 	transform: function(data){
+		//this.aggregatedData = [];
 
-		var aggregData = new Array();
-		var Alimit = this.aggregLimit;
-		this.aggregatedData = new Array();
+		var aggregData = [];
+		var totalAggreg = 0;
+		var totalValue = _.reduce(data, function(memo, elem){
+			return memo + elem.val;
+		},0);
+		var underPercentage = (EzChartsConfig.aggregateUnder/100)*totalValue;
+
 		_.each(data, function(elem, i){
-			if(elem.val < Alimit){
-				this.aggregatedData.push(elem);
-			}
-		},this);
-		console.log("val: ", this.aggregatedData.length);
-		if(this.aggregatedData.length > 1){
-			var totalAggreg = 0;
-			_.each(data, function(elem, i){
-			if(elem.val < Alimit)
+			if(elem.val < underPercentage){
+				chart.aggregatedData.push(elem);
 				totalAggreg += elem.val;
+			}
 			else
 				aggregData.push(elem);
-			});
-			aggregData.push({id: aggregData.length, label: this.aggregLabel, val: totalAggreg, aggregated: true});
-			data = aggregData;
-			console.log("data: ", data);
+		},chart);
+		if(chart.aggregatedData.length > 1){
+			aggregData.push({id: data.length + 1, label: EzChartsConfig.aggregatedTitle, val: totalAggreg, aggregated: true});
 		}
-
+		data = EzChartsConfig.transformCb(aggregData, chart);
+		console.log("transformedData: ", this.aggregatedData);
+		_.each(data, function(elem, idx, arr){
+			if(elem.aggregated && elem.val == 0)
+				arr.splice(idx, 1);
+		});
+		console.log("transform");
 		var maxVal = d3.max(data, function(elem){
 			return elem.val;
 		});
 	    this.scaleY.domain([0, maxVal]);
-
 	    return data;
 	}
 });
