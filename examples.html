@@ -19,7 +19,7 @@
   <div class="chart"></div>
 
   <script type="text/javascript">
-    var chart = d3.select('.chart')
+    var toto = d3.select('.chart')
         .append('svg')
           .attr('width', 500)
           .attr('height', 300)
@@ -34,7 +34,7 @@
       {id: 5, label: "Tiny Val 3", val: 2},
       {id: 6, label: "Tiny Val 4", val: 1},
     ];
-    chart.draw(data);
+    toto.draw(data);
 
     function rdmData(){
       var data = [
@@ -46,7 +46,7 @@
       {id: 5, label: "Tiny Val 3", val: Math.floor(Math.random() * 500)},
       {id: 6, label: "Tiny Val 4", val: Math.floor(Math.random() * 500)},
     ];
-    chart.draw(data);
+    toto.draw(data);
     }
 
 

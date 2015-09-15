@@ -162,15 +162,19 @@ d3.chart("genericBars", {
 		});
 	},
 	transform: function(data){
+		var chart = this;
 		//this.aggregatedData = [];
 
 		var aggregData = [];
 		var totalAggreg = 0;
+
+		// TODO: Use d3.sum
 		var totalValue = _.reduce(data, function(memo, elem){
 			return memo + elem.val;
 		},0);
 		var underPercentage = (EzChartsConfig.aggregateUnder/100)*totalValue;
 
+		// TODO: Use d3.sum
 		_.each(data, function(elem, i){
 			if(elem.val < underPercentage){
 				chart.aggregatedData.push(elem);
