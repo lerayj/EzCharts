@@ -9,8 +9,11 @@
   <script type="text/javascript" src="./dependencies/d3/d3.js"></script>
   <script type="text/javascript" src="./dependencies/d3/d3.chart.js"></script>
 
+  <script type="text/javascript" src="./ezChartsConfig.js"></script>
   <script type="text/javascript" src="./charts/genericBars.js"></script>
   <script type="text/javascript" src="./charts/genericDonut.js"></script>
+
+
 
   <script type="text/javascript" src="./examples.js"></script>
 
@@ -21,8 +24,8 @@
   <script type="text/javascript">
     var chart = d3.select('.chart')
         .append('svg')
-          .attr('width', 500)
-          .attr('height', 300)
+          .attr('width', 400)
+          .attr('height', 200)
           .chart('genericBars');
 
     var data = [

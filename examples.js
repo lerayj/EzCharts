@@ -1,38 +1,48 @@
-EzChartsConfig.aggregatedTitle = "Others";
+var precedChart = null;
+var transData = null;
 
-EzChartsConfig.clickBarCb = function(elemClicked, chart){
-	if(elemClicked.aggregated){
+EzChartsConfig.Bars.aggregatedTitle = "Others";
+
+EzChartsConfig.Bars.clickBarCb = function(elemClicked, chart){
+	if(elemClicked.aggregated) {
 		var nbSelectedElem = d3.selectAll('rect')[0].length;
 		chart.xLabelLayer.attr('opacity', 1);
 		chart.TooltipVals.attr('opacity', 1);
-		chart.xLabelLayer.transition().duration(1000).delay(1000).attr('opacity', 0);
-		chart.TooltipVals.transition().duration(1000).attr('opacity', 0);
+		chart.xLabelLayer.transition().duration(250).delay(250).attr('opacity', 0);
+		chart.TooltipVals.transition().duration(250).attr('opacity', 0);
 
-		d3.selectAll('rect').transition().each("start",function(elem,i){
-			if(nbSelectedElem%2 != 0 && i == Math.round(nbSelectedElem/2) - 1){
-				d3.select(this).transition().duration(1000).delay(nbSelectedElem*250)       
-				.attr("y", -chart.height).style('fill', 'red').each("end", function(elem, i){				
-					var donut = d3.select(chart.base.node())
-						.chart('genericDonut');
-    				donut.draw(chart.aggregatedData);
-				});
+
+		var rectTransitions = d3.selectAll('rect').transition(500).delay(function (d, i) {
+			return 250*i;
+		});
+
+		rectTransitions.attr('x', function (d, i) {
+			return i%2 == 0 ? -chart.width : chart.width;
+		}).each('end', function (d, i) {
+			if (i == nbSelectedElem-1) {
+				
+				$('.chart svg').empty();
+				var donut = d3.select('.chart svg')
+					.chart('genericDonut');
+
+				console.log("Donut: ", chart.aggregatedData);
+				precedChart = chart;
+				transData = chart.beforeTransformData;
+
+				donut.draw(chart.aggregatedData);
 			}
-			else{
-				if (i%2 == 0){
-					d3.select(this)       
-						.transition().duration(500).delay(i*250)         
-						.attr("x", -chart.width);
-					}								
-				else{
-					d3.select(this)       
-						.transition().duration(500).delay(i*250)        
-						.attr("x",chart.width);
-					}	
-				}
-			});
+		});
 	}
 }
 
-EzChartsConfig.transformCb = function(data, chart){
+EzChartsConfig.Bars.transformCb = function(data, chart){
 	return data;
+}
+
+EzChartsConfig.Donut.clickDonutCb = function(elemClicked, chart){
+	$('.chart svg').empty();
+	console.log(chart.base);
+	console.log("data transf: ", transData);
+	var barsBack = d3.select(precedChart.svg).chart('genericBars');
+	barsBack.draw(transData);
 }

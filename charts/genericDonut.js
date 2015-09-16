@@ -6,6 +6,7 @@ d3.chart('genericDonut', {
 
 		chart = this;
 
+
 		var margin = {bottom: 10, left: 10, top: 30, right: 10};
 		var radius = Math.min(width - (margin.left + margin.right), height - (margin.bottom + margin.top)) / 2;
 		var rLabel = radius + 20;
@@ -21,13 +22,15 @@ d3.chart('genericDonut', {
 		chart.data = null;
 
 		var donutBase = chart.base.append('g').attr('class', 'slices')
-			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-		chart.layer('donutSlices', donutBase, {
+			.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+			.on('click', function(elem){
+		        	EzChartsConfig.Donut.clickDonutCb(elem, chart);
+    			});
+		this.pieLayer = chart.layer('donutSlices', donutBase, {
 			dataBind: function(data){
 				chart.data = data;
 				this.append('text')
 				.text("lol");
-				//.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 				return this.selectAll('.slice').data(pie(data), function(elem){
 					return elem.data.id;
 				});
