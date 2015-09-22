@@ -12,12 +12,20 @@ var EzChartsConfig = {
 			return data;
 		},
 		"maxBars" : 5,
-		"aggregateUnder": 5,
+		"aggregateUnder": 100,
 		"aggregatedTitle": "Others"
 	},
 	"Donut": {
+		'donutSize': 0,
+		'holeSize': 40,
 		'clickDonutCb': function(elemClicked, chart){
 	 		//overload this callbackto customize
 		}
+	},
+	"Map": {
+		"TopoFile" : "dataMap.json"
+	},
+	"Lines": {
+		
 	}
 };
