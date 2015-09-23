@@ -30,3 +30,24 @@ svg text{
 .country.FXX{
 	fill:red;
 }
+
+.line {
+	stroke: #bccd2a;
+	stroke-width: 2.5px;
+	fill: none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #6e6e6e;
+  shape-rendering: crispEdges;
+}
+
+ .tick line{
+    opacity: 0.1;
+  }
+
+.bulletLine{
+	fill:#afb3b5;
+}
