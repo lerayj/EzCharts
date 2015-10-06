@@ -32,6 +32,12 @@ d3.chart('genericTimeLines', {
 		    .innerTickSize(-this.width)
     		.outerTickSize(0).tickPadding(10);
 
+		// Define 'div' for tooltips
+		this.divTip = d3.select("body")
+			.append("div")  // declare the tooltip div 
+			.attr("class", "tooltip")              // apply the 'tooltip' class
+			.style("opacity", 0); 
+
 		var svgLine = d3.svg.line()
 	        .x(function (d) {
 	        	return chart.x(d.id);
@@ -58,11 +64,13 @@ d3.chart('genericTimeLines', {
 				});
 			},
 			insert: function(data){
-				console.log(d3.selectAll('.bulletLine'));
 				return this.append('path').attr('class', 'line');
+
 			},
 			events: {
 				"merge:transition": function(){
+
+			
 		          this.duration(250).attr('d', function(line){
 		            return svgLine(line.points);
 		          });
@@ -82,11 +90,29 @@ d3.chart('genericTimeLines', {
 			});
 		},
 		insert: function(){
-			return this.append('circle').classed('bulletLine', true).append('title');
+
+			return this.append('circle').classed('bulletLine', true)				
+					.on("mouseover", function(d) {		
+		            chart.divTip.transition()
+						.duration(500)	
+						.style("opacity", 0);
+					chart.divTip.transition()
+						.duration(200)	
+						.style("opacity", .9);	
+
+					chart.divTip.html('<span>'+ d.valueY + '</span>')	 
+					.style("left", (d3.event.pageX) + "px")			 
+					.style("top", (d3.event.pageY - 28) + "px");
+					});
+
 
 		},
 		events:{
     		"merge:transition": function(){
+
+
+
+
 
     			this.duration(250)
     			.attr('cx', function(d){
