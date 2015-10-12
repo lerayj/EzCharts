@@ -103,6 +103,14 @@ d3.chart('genericTimeLines', {
 					chart.divTip.html('<span>'+ d.valueY + '</span>')	 
 					.style("left", (d3.event.pageX) + "px")			 
 					.style("top", (d3.event.pageY - 28) + "px");
+					})
+					.on("mouseout", function(d){
+					chart.divTip.transition()
+						.duration(500)	
+						.style("opacity", .9);
+					chart.divTip.transition()
+						.duration(200)	
+						.style("opacity", 0);	
 					});
 
 
