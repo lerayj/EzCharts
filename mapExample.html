@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./examples.css">
+
+  <script type="text/javascript" src="./dependencies/jquery-2.1.3.js"></script>
+  <script type="text/javascript" src="./dependencies/underscore.js"></script>
+  <script type="text/javascript" src="./dependencies/d3/d3.js"></script>
+  <script type="text/javascript" src="./dependencies/d3/d3.chart.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+
+  <script type="text/javascript" src="./ezChartsConfig.js"></script>
+  <script type="text/javascript" src="./charts/genericWorldMap.js"></script>
+  <script type="text/javascript" src="./mapExample.js"></script>
+
+</head>
+<body>
+  <div class="chart"></div>
+
+  <script type="text/javascript">
+    var chart = d3.select('.chart')
+        .append('svg')
+          .attr('width', 800)
+          .attr('height', 600)
+          .chart('genericWorldMap');
+
+
+
+  </script>
+</body>
+</html>

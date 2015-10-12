@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./examples.css">
+
+  <script type="text/javascript" src="./dependencies/jquery-2.1.3.js"></script>
+  <script type="text/javascript" src="./dependencies/underscore.js"></script>
+  <script type="text/javascript" src="./dependencies/d3/d3.js"></script>
+  <script type="text/javascript" src="./dependencies/d3/d3.chart.js"></script>
+  <script type="text/javascript" src="./bower_components/d3-tip/index.js"></script>
+  <script type="text/javascript" src="./ezChartsConfig.js"></script>
+  <script type="text/javascript" src="./charts/genericTimeLines.js"></script>
+
+</head>
+<body>
+  <div class="chart"></div>
+
+  <script type="text/javascript">
+    var chart = d3.select('.chart')
+        .append('svg')
+          .attr('width', 900)
+          .attr('height', 400)
+          .chart('genericTimeLines');
+
+
+  var dataByCost = 
+    [{
+      id: 0,
+      points: 
+        [{
+            id: 0,
+            valueY: 195
+          },{
+            id: 1,
+             valueY: 5894
+          },{
+            id: 2,
+             valueY: 563
+          },{
+            id: 3,
+             valueY: 128
+        },{
+            id: 4,
+             valueY: 2126
+          },{
+            id: 5,
+             valueY: 9816
+          },{
+            id: 6,
+             valueY: 136
+          },{
+            id: 7,
+             valueY: 2436
+          },{
+            id: 8,
+             valueY: 78326
+          },{
+            id: 9,
+             valueY: 3446
+          },{
+            id: 10,
+             valueY: 16
+          },{
+            id: 11,
+             valueY: 9816
+          },{
+            id: 12,
+             valueY: 136
+          },{
+            id: 13,
+             valueY: 2436
+          },{
+            id: 14,
+             valueY: 78326
+          },{
+            id: 15,
+             valueY: 3446
+          },{
+            id: 16,
+             valueY: 16
+          },{
+            id: 17,
+             valueY: 9816
+          },{
+            id: 18,
+             valueY: 136
+          },{
+            id: 19,
+             valueY: 2436
+          },{
+            id: 20,
+             valueY: 78326
+          },{
+            id: 21,
+             valueY: 3446
+          },{
+            id: 22,
+             valueY: 16
+          },{
+            id: 23,
+             valueY: 9816
+          },{
+            id: 24,
+             valueY: 136
+          },{
+            id: 25,
+             valueY: 2436
+          },{
+            id: 26,
+             valueY: 78326
+          },{
+            id: 27,
+             valueY: 3446
+          },{
+            id: 28,
+             valueY: 16
+          },{
+            id: 29,
+             valueY: 16
+          },{
+            id: 30,
+             valueY: 16
+          }]
+    }];
+  console.log("data: ", dataByCost);
+  chart.draw(dataByCost);
+
+  function volData(){
+    var dataByVolume = 
+    [{
+      id: 0,
+      points: 
+        [{
+            id: 0,
+            valueY: 19
+          },{
+            id: 1,
+             valueY: 589
+          },{
+            id: 2,
+             valueY: 56
+          },{
+            id: 3,
+             valueY: 8
+        },{
+            id: 4,
+             valueY: 126
+          },{
+            id: 5,
+             valueY: 16
+          },{
+            id: 6,
+             valueY: 136
+          },{
+            id: 7,
+             valueY: 26
+          },{
+            id: 8,
+             valueY: 786
+          },{
+            id: 9,
+             valueY: 346
+          },{
+            id: 10,
+             valueY: 16
+          },{
+            id: 11,
+             valueY: 9816
+          },{
+            id: 12,
+             valueY: 136
+          },{
+            id: 13,
+             valueY: 2436
+          },{
+            id: 14,
+             valueY: 78326
+          },{
+            id: 15,
+             valueY: 3446
+          },{
+            id: 16,
+             valueY: 16
+          },{
+            id: 17,
+             valueY: 9816
+          },{
+            id: 18,
+             valueY: 136
+          },{
+            id: 19,
+             valueY: 2436
+          },{
+            id: 20,
+             valueY: 78326
+          },{
+            id: 21,
+             valueY: 3446
+          },{
+            id: 22,
+             valueY: 16
+          },{
+            id: 23,
+             valueY: 9816
+          },{
+            id: 24,
+             valueY: 136
+          },{
+            id: 25,
+             valueY: 2436
+          },{
+            id: 26,
+             valueY: 78326
+          },{
+            id: 27,
+             valueY: 3446
+          },{
+            id: 28,
+             valueY: 16
+          },{
+            id: 29,
+             valueY: 16
+          },{
+            id: 30,
+             valueY: 16
+          }]
+    }];
+
+    chart.draw(dataByVolume);
+  }
+
+  </script>
+
+
+    <button onclick="volData()">Switch to Volume</button>
+</body>
+</html>

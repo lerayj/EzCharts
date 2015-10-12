@@ -1,0 +1,74 @@
+rect{
+	fill: #1abc9c;
+}
+
+.slice-0{
+	fill: #3498db;
+}
+
+.slice-1{
+	fill: #9b59b6;
+}
+
+.slice-2{
+	fill: #f1c40f;
+}
+
+.slice-3{
+	fill: #e74c3c;
+}
+
+.slice-4{
+	fill: #2c3e50;
+}
+
+svg text{
+	font-family: georgia;
+	fill:#2c3e50;
+}
+
+.country.FXX{
+	fill:red;
+}
+
+.line {
+	stroke: #bccd2a;
+	stroke-width: 2.5px;
+	fill: none;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #6e6e6e;
+  shape-rendering: crispEdges;
+}
+
+ .tick line{
+    opacity: 0.1;
+  }
+
+.bulletLine{
+	fill:#afb3b5;
+}
+
+.bulletLine:hover{
+	fill:black;
+}
+
+div.tooltip {
+  position: absolute;	
+  text-align: center;	
+  width: 60px;	
+  height: 18px;		
+  padding: 2px;
+  padding-top: 4px;
+  font-weight: bold;	
+  color:white;
+  font: 12px sans-serif;	
+  background: black;	
+  border: 0px;					
+  border-radius: 2px;
+ /*  pointer-events: none;	This line needs to be removed */
+	
+}
