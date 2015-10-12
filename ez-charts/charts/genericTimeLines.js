@@ -2,7 +2,7 @@ d3.chart('genericTimeLines', {
 	initialize: function(){
 		var chart = this;
 	    this.svg = this.base.node();
-	   	this.margin = {top: 10, right: 10, bottom: 50, left: 70};
+	   	this.margin = {top: 10, right: 70, bottom: 50, left: 70};
 	   	this.width = +this.svg.getAttribute('width');
 	    this.height = +this.svg.getAttribute('height');
 		this.heightChart = chart.height - this.margin.top - this.margin.bottom;
@@ -29,8 +29,14 @@ d3.chart('genericTimeLines', {
 		this.yAxis = d3.svg.axis()
 		    .scale(this.y)
 		    .orient("left")
-		    .innerTickSize(-this.width)
+		    .innerTickSize(-this.width + this.margin.right + this.margin.left)
     		.outerTickSize(0).tickPadding(10);
+
+		// Define 'div' for tooltips
+		this.divTip = d3.select("body")
+			.append("div")  // declare the tooltip div 
+			.attr("class", "tooltipChartLine")              // apply the 'tooltip' class
+			.style("opacity", 0); 
 
 		var svgLine = d3.svg.line()
 	        .x(function (d) {
@@ -58,11 +64,13 @@ d3.chart('genericTimeLines', {
 				});
 			},
 			insert: function(data){
-				console.log(d3.selectAll('.bulletLine'));
 				return this.append('path').attr('class', 'line');
+
 			},
 			events: {
 				"merge:transition": function(){
+
+			
 		          this.duration(250).attr('d', function(line){
 		            return svgLine(line.points);
 		          });
@@ -76,17 +84,42 @@ d3.chart('genericTimeLines', {
 
 		chart.layer("bulletValue", this.base.append('g').attr('transform', 'translate(' + 28 + ',' + (this.margin.top) + ')'), {
 		dataBind: function(data){
-			console.log("dzata: ", data);
 			return this.selectAll(".bulletLine").data(data[0].points, function(elem){
 				return elem.id;
 			});
 		},
 		insert: function(){
-			return this.append('circle').classed('bulletLine', true).append('title');
+
+			return this.append('circle').classed('bulletLine', true)				
+					.on("mouseover", function(d) {		
+		            chart.divTip.transition()
+						.duration(500)	
+						.style("opacity", 0);
+					chart.divTip.transition()
+						.duration(200)	
+						.style("opacity", .9);	
+
+					chart.divTip.html('<span>'+ d.valueY + '</span>')	 
+					.style("left", (d3.event.pageX) + "px")			 
+					.style("top", (d3.event.pageY - 28) + "px");
+					})
+					.on("mouseout", function(d){
+					chart.divTip.transition()
+						.duration(500)	
+						.style("opacity", .9);
+					chart.divTip.transition()
+						.duration(200)	
+						.style("opacity", 0);	
+					});
+
 
 		},
 		events:{
     		"merge:transition": function(){
+
+
+
+
 
     			this.duration(250)
     			.attr('cx', function(d){

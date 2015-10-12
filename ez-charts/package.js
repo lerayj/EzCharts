@@ -20,6 +20,7 @@ Package.onUse(function(api) {
   api.addFiles('charts/genericBars.js', 'client');
   api.addFiles('charts/genericLines.js', 'client');
   api.addFiles('charts/genericDonut.js', 'client');
+    api.addFiles('charts/genericTimeLines.js', 'client');
   api.addFiles('ez-charts.js', 'client');
   api.addFiles('styleCharts.css', 'client');
   api.export("EzCharts", 'client');

@@ -2,7 +2,8 @@ var indexCore =
 {
   defaultBarIdx : 0,
   defaultLineIdx : 0,
-  defaultDonutIdx : 0
+  defaultDonutIdx : 0,
+  defaultTimeLineIdx : 0
 }
 
 
@@ -38,6 +39,7 @@ EzCharts = {
   },
   reDraw: function(chartName, newData){
     var chartToDraw = null;
+    console.log("ref: ", this.charts);
     _.each(this.charts, function(chartsTypeCollec){
       _.each(chartsTypeCollec.charts, function(chart){
         if(chart.name == chartName)
@@ -61,4 +63,8 @@ Template.EzChartLine.rendered = function() {
 
 Template.EzChartDonut.rendered = function() {
   EzCharts.drawerChoiceCore(".chartDonut", "data-ezc-donut-id", 'genericDonut', "defaultDonutIdx", this.data);
+}
+
+Template.EzChartTimeLine.rendered = function() {
+  EzCharts.drawerChoiceCore(".chartTimeLine", "data-ezc-timeLine-id", 'genericTimeLines', "defaultTimeLineIdx", this.data);
 }
